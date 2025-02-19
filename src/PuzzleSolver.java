@@ -54,11 +54,11 @@ public class PuzzleSolver {
 
         Block block = blocks.get(index);
         List<Block> orientations = block.generateOrientations();
-
-        for (Block orient : orientations) {
+        System.out.println("Menghasilkan orientasi unik untuk blok " + block.symbol + ": " + orientations.size());
+/*         for (Block orient : orientations) {
             for (int r = 0; r < N; r++) {
                 for (int c = 0; c < M; c++) {
-                    iterationCount++;
+                    //iterationCount++;
                     if (canPlace(orient, r, c)) {
                         placeBlock(orient, r, c, block.symbol);
                         if (solveRecursive(index + 1)) return true;
@@ -66,10 +66,72 @@ public class PuzzleSolver {
                     }
                 }
             }
+        } */
+        for (int r = 0; r < N; r++) {
+            for (int c = 0; c < M; c++) {
+                for (Block orient : orientations) {  
+                    if (canPlace(orient, r, c)) { 
+                        iterationCount++; 
+                        placeBlock(orient, r, c, block.symbol);
+                        printBoard(); 
+                        System.out.println("---------------------------------");
+                        if (solveRecursive(index + 1)) return true;  
+    
+                        removeBlock(orient, r, c);  
+                        System.out.println("Backtracking: Menghapus blok " + block.symbol + " dari (" + r + ", " + c + ")");
+                        printBoard();
+                    }
+                }
+            }
         }
-        return false;
+        return false; // Jika sudah coba di satu posisi tapi gagal, langsung keluar
     }
 
+/*     private boolean solveRecursive(int index) {
+        if (iterationCount > 1000000) { // Batas iterasi, bisa disesuaikan
+            System.out.println("❌ Terlalu banyak iterasi, kemungkinan loop tak berujung.");
+            return false;
+        }
+    
+        System.out.println("\n🔄 Iterasi ke-" + iterationCount + " | Index: " + index);
+        iterationCount++;
+    
+        if (index == blocks.size()) {
+            System.out.println("✅ Semua blok telah ditempatkan. Memeriksa solusi...");
+            return isValidBoard();
+        }
+    
+        Block block = blocks.get(index);
+        List<Block> orientations = block.generateOrientations();
+        System.out.println("📦 Mencoba menempatkan blok: " + block.symbol + " (" + orientations.size() + " orientasi)");
+    
+        for (Block orient : orientations) {
+            for (int r = 0; r < N; r++) {
+                for (int c = 0; c < M; c++) {
+                    System.out.println("🔎 Coba di posisi: (" + r + ", " + c + ")");
+    
+                    if (canPlace(orient, r, c)) {
+                        System.out.println("✅ Berhasil menempatkan blok " + block.symbol + " di (" + r + ", " + c + ")");
+                        placeBlock(orient, r, c, block.symbol);
+                        printBoard();
+    
+                        if (solveRecursive(index + 1)) {
+                            return true;
+                        }
+    
+                        System.out.println("❌ Backtracking! Melepas blok " + block.symbol + " dari (" + r + ", " + c + ")");
+                        removeBlock(orient, r, c);
+                        printBoard();
+                    }
+                }
+            }
+        }
+    
+        System.out.println("❌ Tidak bisa menempatkan blok " + block.symbol + ". Kembali ke langkah sebelumnya.");
+        return false;
+    }
+    
+ */
     private boolean canPlace(Block block, int startX, int startY) {
         for (int[] cell : block.coordinates) {
             int x = startX + cell[0];
@@ -105,7 +167,7 @@ public class PuzzleSolver {
                 if (cell != '.') filledCells++;
             }
         }
-        return filledCells == 25; // Papan 5x5 harus penuh
+        return filledCells == (N*M); // Papan 5x5 harus penuh
     }
 
     public void printBoard() {
