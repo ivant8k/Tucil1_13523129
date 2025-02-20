@@ -50,88 +50,25 @@ public class PuzzleSolver {
     }
 
     private boolean solveRecursive(int index) {
-        if (index == blocks.size()) return isValidBoard();
+        if (index == blocks.size()) return isValidBoard(); // cek valid
 
         Block block = blocks.get(index);
         List<Block> orientations = block.generateOrientations();
-        System.out.println("Menghasilkan orientasi unik untuk blok " + block.symbol + ": " + orientations.size());
-/*         for (Block orient : orientations) {
-            for (int r = 0; r < N; r++) {
-                for (int c = 0; c < M; c++) {
-                    //iterationCount++;
-                    if (canPlace(orient, r, c)) {
-                        placeBlock(orient, r, c, block.symbol);
-                        if (solveRecursive(index + 1)) return true;
-                        removeBlock(orient, r, c);
-                    }
-                }
-            }
-        } */
-        for (int r = 0; r < N; r++) {
-            for (int c = 0; c < M; c++) {
-                for (Block orient : orientations) {  
-                    if (canPlace(orient, r, c)) { 
-                        iterationCount++; 
-                        placeBlock(orient, r, c, block.symbol);
-                        printBoard(); 
-                        System.out.println("---------------------------------");
-                        if (solveRecursive(index + 1)) return true;  
-    
-                        removeBlock(orient, r, c);  
-                        System.out.println("Backtracking: Menghapus blok " + block.symbol + " dari (" + r + ", " + c + ")");
-                        printBoard();
-                    }
-                }
-            }
-        }
-        return false; // Jika sudah coba di satu posisi tapi gagal, langsung keluar
-    }
 
-/*     private boolean solveRecursive(int index) {
-        if (iterationCount > 1000000) { // Batas iterasi, bisa disesuaikan
-            System.out.println("❌ Terlalu banyak iterasi, kemungkinan loop tak berujung.");
-            return false;
-        }
-    
-        System.out.println("\n🔄 Iterasi ke-" + iterationCount + " | Index: " + index);
-        iterationCount++;
-    
-        if (index == blocks.size()) {
-            System.out.println("✅ Semua blok telah ditempatkan. Memeriksa solusi...");
-            return isValidBoard();
-        }
-    
-        Block block = blocks.get(index);
-        List<Block> orientations = block.generateOrientations();
-        System.out.println("📦 Mencoba menempatkan blok: " + block.symbol + " (" + orientations.size() + " orientasi)");
-    
-        for (Block orient : orientations) {
+        for (Block orient : orientations) {  
             for (int r = 0; r < N; r++) {
                 for (int c = 0; c < M; c++) {
-                    System.out.println("🔎 Coba di posisi: (" + r + ", " + c + ")");
-    
                     if (canPlace(orient, r, c)) {
-                        System.out.println("✅ Berhasil menempatkan blok " + block.symbol + " di (" + r + ", " + c + ")");
                         placeBlock(orient, r, c, block.symbol);
-                        printBoard();
-    
-                        if (solveRecursive(index + 1)) {
-                            return true;
-                        }
-    
-                        System.out.println("❌ Backtracking! Melepas blok " + block.symbol + " dari (" + r + ", " + c + ")");
+                        if (solveRecursive(index + 1)) return true; // Jika berhasil, langsung return
                         removeBlock(orient, r, c);
-                        printBoard();
+                        iterationCount++;
                     }
                 }
             }
         }
-    
-        System.out.println("❌ Tidak bisa menempatkan blok " + block.symbol + ". Kembali ke langkah sebelumnya.");
-        return false;
+        return false; // backtrack
     }
-    
- */
     private boolean canPlace(Block block, int startX, int startY) {
         for (int[] cell : block.coordinates) {
             int x = startX + cell[0];

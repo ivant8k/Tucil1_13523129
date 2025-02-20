@@ -24,51 +24,29 @@ public class Block {
     public List<Block> generateOrientations() {
         Set<String> seen = new HashSet<>();
         List<Block> orientations = new ArrayList<>();
+        char[][] currentShape = toMatrix(this.coordinates);
 
-        for (int r = 0; r < 4; r++) {
-            List<int[]> rotated = new ArrayList<>();
-            for (int[] cell : coordinates) {
-                int x = cell[0], y = cell[1];
-                for (int i = 0; i < r; i++) {
-                    int temp = x;
-                    x = y;
-                    y = -temp;
+        for (int i = 0; i < 4; i++) { // 4 kali rotasi
+            String shapeStr = matrixToString(currentShape);
+
+            if (seen.add(shapeStr)) {
+                orientations.add(new Block(this.symbol, matrixToShape(currentShape)));
+
+                // Cerminkan dan cek bentuk uniknya
+                char[][] reflected = reflect(currentShape);
+                shapeStr = matrixToString(reflected);
+                if (seen.add(shapeStr)) {
+                    orientations.add(new Block(this.symbol, matrixToShape(reflected)));
                 }
-                rotated.add(new int[]{x, y});
-            }
-            normalize(rotated);
-            if (seen.add(rotated.toString())) {
-                orientations.add(new Block(this.symbol, coordsToShape(rotated)));
             }
 
-            // Mirror horizontal
-            List<int[]> mirrored = new ArrayList<>();
-            for (int[] cell : rotated) {
-                mirrored.add(new int[]{cell[0], -cell[1]});
-            }
-            normalize(mirrored);
-            if (seen.add(mirrored.toString())) {
-                orientations.add(new Block(this.symbol, coordsToShape(mirrored)));
-            }
+            currentShape = rotate(currentShape);
         }
 
         return orientations;
     }
 
-    private void normalize(List<int[]> coords) {
-        int minX = Integer.MAX_VALUE;
-        int minY = Integer.MAX_VALUE;
-        for (int[] c : coords) {
-            minX = Math.min(minX, c[0]);
-            minY = Math.min(minY, c[1]);
-        }
-        for (int[] c : coords) {
-            c[0] -= minX;
-            c[1] -= minY;
-        }
-    }
-
-    private List<String> coordsToShape(List<int[]> coords) {
+    private char[][] toMatrix(List<int[]> coords) {
         int maxX = 0, maxY = 0;
         for (int[] c : coords) {
             maxX = Math.max(maxX, c[0]);
@@ -82,10 +60,46 @@ public class Block {
             shape[c[0]][c[1]] = this.symbol;
         }
 
+        return shape;
+    }
+
+    private String matrixToString(char[][] matrix) {
+        StringBuilder sb = new StringBuilder();
+        for (char[] row : matrix) {
+            sb.append(new String(row)).append("\n");
+        }
+        return sb.toString();
+    }
+
+    private List<String> matrixToShape(char[][] matrix) {
         List<String> result = new ArrayList<>();
-        for (char[] row : shape) {
+        for (char[] row : matrix) {
             result.add(new String(row));
         }
         return result;
+    }
+
+    private char[][] rotate(char[][] matrix) {
+        int rows = matrix.length, cols = matrix[0].length;
+        char[][] rotated = new char[cols][rows];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                rotated[j][rows - i - 1] = matrix[i][j];
+            }
+        }
+        return rotated;
+    }
+
+    private char[][] reflect(char[][] matrix) {
+        int rows = matrix.length, cols = matrix[0].length;
+        char[][] reflected = new char[rows][cols];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                reflected[i][cols - j - 1] = matrix[i][j];
+            }
+        }
+        return reflected;
     }
 }
