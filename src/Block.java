@@ -8,7 +8,7 @@ public class Block {
         this.symbol = symbol;
         this.coordinates = parseShape(shape);
     }
-
+    // Parsing bentuk blok dari string
     private List<int[]> parseShape(List<String> shape) {
         List<int[]> coords = new ArrayList<>();
         for (int i = 0; i < shape.size(); i++) {
@@ -20,7 +20,7 @@ public class Block {
         }
         return coords;
     }
-
+    // Generate semua kemungkinan orientasi blok
     public List<Block> generateOrientations() {
         Set<String> seen = new HashSet<>();
         List<Block> orientations = new ArrayList<>();
@@ -45,7 +45,7 @@ public class Block {
 
         return orientations;
     }
-
+    // Konversi koordinat ke matriks
     private char[][] toMatrix(List<int[]> coords) {
         int maxX = 0, maxY = 0;
         for (int[] c : coords) {
@@ -62,7 +62,7 @@ public class Block {
 
         return shape;
     }
-
+    // Konversi matriks ke string
     private String matrixToString(char[][] matrix) {
         StringBuilder sb = new StringBuilder();
         for (char[] row : matrix) {
@@ -70,7 +70,7 @@ public class Block {
         }
         return sb.toString();
     }
-
+    // Konversi matriks ke list bentuk blok
     private List<String> matrixToShape(char[][] matrix) {
         List<String> result = new ArrayList<>();
         for (char[] row : matrix) {
@@ -78,7 +78,7 @@ public class Block {
         }
         return result;
     }
-
+    // Rotasi 90 derajat searah jarum jam
     private char[][] rotate(char[][] matrix) {
         int rows = matrix.length, cols = matrix[0].length;
         char[][] rotated = new char[cols][rows];
@@ -90,7 +90,7 @@ public class Block {
         }
         return rotated;
     }
-
+    // Cerminkan bentuk
     private char[][] reflect(char[][] matrix) {
         int rows = matrix.length, cols = matrix[0].length;
         char[][] reflected = new char[rows][cols];
