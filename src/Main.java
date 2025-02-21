@@ -19,14 +19,16 @@ public class Main {
                 solver.printBoard();
                 System.out.println("Waktu pencarian: " + (end - start) + " ms");
                 System.out.println("Banyak iterasi: " + solver.getIterationCount());
-
-                System.out.print("Ingin menyimpan solusi? (ya/tidak): ");
-                String save = scanner.nextLine();
-                if (save.equalsIgnoreCase("ya")) {
-                    solver.saveSolution("test/solution.txt");
-                    System.out.println("Solusi disimpan di 'test/solution.txt'");
-                }
-            } else {
+            
+                System.out.print("Ingin menyimpan solusi sebagai gambar? (ya/tidak): ");
+                String saveImage = scanner.nextLine();
+                if (saveImage.equalsIgnoreCase("ya")) {
+                    PuzzleImageSaver.savePuzzleImage(solver.getBoard(), "test/solution.png");
+                    System.out.println("Solusi disimpan sebagai gambar di 'test/solution.png'");
+                }                
+                
+            }
+            else {
                 System.out.println("Tidak ada solusi ditemukan.");
             }
         } catch (IOException e) {

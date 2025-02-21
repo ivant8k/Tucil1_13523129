@@ -42,7 +42,7 @@ public class PuzzleSolver {
         String currentSymbol = null;
         List<String> currentShape = new ArrayList<>();
 
-                String line;
+        String line;
         while ((line = br.readLine()) != null) {
             if (line.isEmpty()) continue; // Lewati baris kosong
     
@@ -125,8 +125,16 @@ public class PuzzleSolver {
                 for (int c = 0; c < M; c++) {
                     if (canPlace(orient, r, c)) {
                         placeBlock(orient, r, c, block.symbol);
+                        clearScreen();
+                        printBoard();
+
+                        try { Thread.sleep(200); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+                        
                         if (solveRecursively(index + 1)) return true; // Jika berhasil, langsung return
                         removeBlock(orient, r, c);
+                        clearScreen();
+                        printBoard();
+                        try { Thread.sleep(200); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
                         iterationCount++;
                     }
                 }
@@ -194,5 +202,12 @@ public class PuzzleSolver {
 
     public int getIterationCount() {
         return iterationCount;
+    }
+    public char[][] getBoard() {
+        return board;
+    }
+    private void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }
