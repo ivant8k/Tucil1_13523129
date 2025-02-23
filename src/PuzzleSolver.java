@@ -132,16 +132,16 @@ public class PuzzleSolver {
                 for (int c = 0; c < M; c++) {
                     if (canPlace(orient, r, c)) {
                         placeBlock(orient, r, c, block.symbol);
-                        //clearScreen();
-                        //printBoard();
+                        clearScreen();
+                        printBoard();
 
-                        //try { Thread.sleep(200); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+                        try { Thread.sleep(200); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
                         
                         if (solveRecursively(index + 1)) return true; // Jika berhasil, langsung return
                         removeBlock(orient, r, c);
-                        //clearScreen();
-                        //printBoard();
-                        //try { Thread.sleep(200); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+                        clearScreen();
+                        printBoard();
+                        try { Thread.sleep(200); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
                         iterationCount++;
                     }
                 }

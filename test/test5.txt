@@ -1,6 +1,28 @@
-2 7 2
+2 13 26
 DEFAULT
 A
-AAAAAA
 B
-BBBBBB
+C
+D
+E
+F
+G
+H
+I
+J
+K
+L
+M
+N
+O
+P
+Q
+R
+S
+T
+U
+V
+W
+X
+Y
+Z

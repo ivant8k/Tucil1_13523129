@@ -5,8 +5,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class PuzzleImageSaver {
-    private static final int CELL_SIZE = 50; // Ukuran tiap sel
-    private static final int PADDING = 10;   // Padding sekitar board
+    private static final int CELL_SIZE = 50;
+    private static final int PADDING = 10;
 
     public static void savePuzzleImage(char[][] board, String filename) {
         int rows = board.length;
