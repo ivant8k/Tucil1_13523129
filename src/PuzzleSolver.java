@@ -47,7 +47,6 @@ public class PuzzleSolver {
             if (line.isEmpty()) continue; // Lewati baris kosong
     
             char firstChar = line.charAt(0);
-    
             // Validasi: Pastikan hanya huruf kapital A - Z
             if (!Character.isUpperCase(firstChar) || firstChar < 'A' || firstChar > 'Z') {
                 throw new IllegalArgumentException("Error: Karakter blok harus berupa huruf kapital A-Z! Ditemukan: " + firstChar);
@@ -84,7 +83,15 @@ public class PuzzleSolver {
         }
     
         br.close();
-    
+            // Validasi: Pastikan jumlah total sel blok sama dengan ukuran papan
+        int totalBlockCells = 0;
+        for (Block b : blocks) {
+            totalBlockCells += b.coordinates.size();
+        }
+
+        if (totalBlockCells != (N * M)) {
+            throw new IllegalArgumentException("Error: Total sel blok (" + totalBlockCells + ") tidak sesuai dengan ukuran papan (" + (N * M) + ")");
+        }
         // **Validasi: Pastikan jumlah blok sesuai dengan P**
         if (blocks.size() != P) {
             throw new IllegalArgumentException("Error: Jumlah blok tidak sesuai! Diharapkan: " + P + ", tetapi ditemukan: " + blocks.size());
@@ -125,16 +132,16 @@ public class PuzzleSolver {
                 for (int c = 0; c < M; c++) {
                     if (canPlace(orient, r, c)) {
                         placeBlock(orient, r, c, block.symbol);
-                        clearScreen();
-                        printBoard();
+                        //clearScreen();
+                        //printBoard();
 
-                        try { Thread.sleep(200); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+                        //try { Thread.sleep(200); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
                         
                         if (solveRecursively(index + 1)) return true; // Jika berhasil, langsung return
                         removeBlock(orient, r, c);
-                        clearScreen();
-                        printBoard();
-                        try { Thread.sleep(200); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+                        //clearScreen();
+                        //printBoard();
+                        //try { Thread.sleep(200); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
                         iterationCount++;
                     }
                 }
